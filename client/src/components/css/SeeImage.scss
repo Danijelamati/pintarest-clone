@@ -1,0 +1,122 @@
+.container{
+    margin: 5%;
+}
+.image-title{
+    display: flex;
+    justify-content: center;   
+}
+
+.image-date{
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 5%;
+    font-size: 1rem;
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+}
+
+
+.image-info{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    margin-right: 10%;
+    margin-left: 10%;
+}
+
+.user-corner{
+    display: flex;
+    width: 45%;
+    flex-direction: row;
+    justify-content: flex-end;    
+
+    font-size: 1rem;
+}
+
+.author{
+    width: 55%;
+    height: 80%;
+    
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 300%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.image-delete{
+    width: 30%;
+    height: 80%;
+    
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 300%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+    
+    
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.image-about{
+    margin-right: 10%;
+    margin-left: 10%; 
+}
+
+.like-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    width: 30%;
+    
+}
+
+.image-like{
+    width: 30%;
+    height: 80%;
+    
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 300%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+    
+    
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.like-count{
+    font-size: 1rem;
+    text-align: center;
+    vertical-align: middle;
+}
+
+
+

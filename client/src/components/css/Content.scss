@@ -1,0 +1,71 @@
+.content{
+  position: relative;
+  top: 4em;
+  height: 100%;  
+  
+}
+
+.pin{
+  position:relative;
+  padding: 0.5rem;
+
+  &:hover{
+    cursor: zoom-in;
+    .save{
+      visibility: visible;
+      
+    }
+    .img-title{
+      visibility: visible;
+    }
+  }
+  
+}
+
+.img-title{
+  position: absolute;  
+  background: rgba(0,0,0,.2);
+  color: white;
+  margin-top: 0.5em;
+  margin-left: 0.5em;
+  font-size: 1em;
+  visibility: hidden;
+}
+
+.save{
+  position: absolute;
+  top: 1em;
+  right: 1em;
+  
+  font-size: 1em;
+  text-align: center;
+  background:red;
+  border-radius: 15%;
+  pointer-events: all;  
+  visibility: hidden;
+
+  &:hover{
+    cursor: pointer;
+    background-color: gray;
+  }
+}
+
+.image{
+  width: 100%;  
+  border-radius: 5%;
+  pointer-events: all;
+  
+}
+
+
+.grid {
+  display: flex;
+  width: 100%;
+}
+
+.grid-col {
+  flex: 1;
+  padding: 0 .1em;
+}
+
+

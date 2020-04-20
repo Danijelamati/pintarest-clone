@@ -1,0 +1,133 @@
+.header{
+    display: flex;
+    position : fixed;       
+    align-items: center;
+
+    z-index:1000;
+
+    width: 100%;
+    height: 4em;
+    background-color: white;
+}
+
+.main-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 20vw;
+    height: 100%;
+
+    text-align: center;
+
+    &:hover{
+        cursor: pointer;
+    }  
+}
+
+.search{
+    display: flex;
+    align-items: center;
+
+    width: 45vw;
+    height: 100%;
+    
+}
+
+.search-input{
+    width: 80%;
+    height: 60%;
+    
+    vertical-align: middle;
+    line-height: 200%;    
+
+    font-size: 1rem;
+}
+.search-submit{
+    width: 10%;
+    height: 80%;
+    
+    font-size: 1.5rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 200%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+    
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.title{
+    text-align: center;
+
+    color: red;
+    font-size: 2.5rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+#pita{
+    width: 4rem;
+    height: 4rem;
+
+    border-radius: 50%;
+}
+
+.account{
+    display: flex;    
+    justify-content: space-evenly;
+    
+    height: 100%;
+    width: 40vw; 
+}
+
+.account-button{    
+
+    width: 15%;
+    height: 80%;
+    
+    font-size: 1.5rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 200%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+    
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.user-button{
+    width: 25%;
+    height: 80%;
+    
+    font-size: 1.5rem;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 200%; 
+
+    border-radius: 20%;
+
+    margin: auto;
+    
+
+    &:hover{
+        background-color: gray;
+        cursor: pointer;
+    }
+}
+
+.signed{
+    display:flex;
+    align-items: center;
+}
