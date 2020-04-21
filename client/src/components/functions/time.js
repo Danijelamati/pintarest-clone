@@ -1,9 +1,8 @@
-module.exports = function(time){
-    const array = time.split("T");
+import moment from "moment-timezone";
 
-    const clock = array[1].slice(0,5);
+export default function(time){
 
-    const date = array[0].split("-").reverse().join("-");   
-
-    return `${clock} ${date}`;
+    const array = time.split("T");        
+    //only central european time for now
+    return moment.tz(`${array[0]} ${array[1].slice(0,5)}`, "Europe/Berlin").format("DD MM YYYY HH:mm");
 }

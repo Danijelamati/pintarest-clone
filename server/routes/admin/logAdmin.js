@@ -8,19 +8,19 @@ module.exports = function(app){
             const{userName,password} = req.query;
             
             if(!userName || !password){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
 
             const user = await adminUser.findOne({userName});
 
             if(!user){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
           
             const compare = await crypt.compare(password,user.password);
 
             if(!compare){
-                return res.status(401).json({"success": false, "message": "Invalid input"}); 
+                return res.json({"success": false, "message": "Invalid input"}); 
             }
 
             const session = new userSession({
@@ -35,7 +35,7 @@ module.exports = function(app){
 
         } catch (error) {
             console.log(error);
-            return res.status(500).json({"success": false, "message": "Server error"});
+            return res.json({"success": false, "message": "Server error"});
         }
     })
 };

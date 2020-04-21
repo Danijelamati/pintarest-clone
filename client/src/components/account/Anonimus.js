@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Modal from "react-modal";
 
 import SignUp from "./SignUp";
@@ -19,6 +19,10 @@ function Anonimus(){
 
     const[logInModal, logInModalOpen] = useState(false);
     const[signUpModal, signUpModalOpen] = useState(false);    
+
+    useEffect( ()=> {
+        Modal.setAppElement("body");
+    },[]);
 
     function openSignUpModal() {
         signUpModalOpen(true);

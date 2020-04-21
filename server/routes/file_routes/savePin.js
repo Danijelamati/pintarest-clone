@@ -10,11 +10,11 @@ module.exports = function(app){
                 const {findSession} = req;
 
                 if(!token || !imageId || !action || !findSession){
-                    return res.status(500).json({"success": false, message:"server error"});
+                    return res.json({"success": false, message:"server error"});
                 }
 
                 if(!action === "pin" && !action ==="unpin"){
-                    return res.status(401).json({"success": false, message:"invalid credentials"});
+                    return res.json({"success": false, message:"invalid credentials"});
                 }
 
                 const auth = authType.get(findSession.auth);
@@ -22,7 +22,7 @@ module.exports = function(app){
                 const findUser = await auth.findById(findSession.userId);
 
                 if(!findUser){
-                    return res.status(500).json({"success": false, message: "server error"});
+                    return res.json({"success": false, message: "server error"});
                 }
 
                 const findImage = findUser.saved.indexOf(imageId);
@@ -34,11 +34,11 @@ module.exports = function(app){
                 }
 
                 if(action=== "unpin"){
-                    return res.status(401).json({"success": true, message: "image not found"});
+                    return res.json({"success": true, message: "image not found"});
                 }
 
                 if(findImage !== -1){
-                    return res.status(401).json({"success": false, message: "allready pined"});
+                    return res.json({"success": false, message: "allready pined"});
                 }
 
                 findUser.saved.push(imageId);
@@ -50,7 +50,7 @@ module.exports = function(app){
             }
             catch(err){
                 console.log(err);
-                return res.status(500).json({"success": false,"message": "server error"});
+                return res.json({"success": false,"message": "server error"});
             }
         })
 };

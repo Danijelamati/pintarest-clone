@@ -7,7 +7,7 @@ module.exports.hash = async (password) => {
 };
 
 module.exports.compare = async (password,hash) => {
-
+    
     return await bcrypt.compare(password,hash);
     
 };

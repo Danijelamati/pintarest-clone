@@ -9,17 +9,17 @@ module.exports = function(app){
             const{userName, password,invite} = req.body;
 
             if(!userName || !password || !invite){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
 
             if(invite !== adminInvite){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
 
             const find = await adminUser.find({userName});
 
             if(find.length>0){
-                return res.status(401).json({"success": false, "message": "user name taken"});
+                return res.json({"success": false, "message": "user name taken"});
             }
 
             const pass = await crypt.hash(password);
@@ -44,7 +44,7 @@ module.exports = function(app){
 
         } catch (error) {
             console.log(error);
-            return res.status(500).json({"success": false, "message": "Server error"});
+            return res.json({"success": false, "message": "Server error"});
         }
     })
 };

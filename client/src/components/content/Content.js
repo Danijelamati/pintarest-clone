@@ -25,9 +25,10 @@ function Content() {
 
     useEffect( () => {
       console.log("content");
+      setError("");
         switch(userContext.images){
 
-            case "home":
+            case "home":              
               (async () => {
                 try{
                   const getImages = await axios({
@@ -35,13 +36,14 @@ function Content() {
                     url: "/content",                
                     headers : {"Content-Type":"application/json"}
                   });
-
+                  
                   if(!getImages.data.success){
                     setFiles([]);
                     setError(getImages.data.message);
                     return;
                   } 
-                  setFiles(getImages.data.images);
+                  
+                  setFiles(getImages.data.images);                 
 
                   return;
                 }
@@ -74,8 +76,10 @@ function Content() {
                         action: "mypins"
                     } 
                   });
+                  console.log(myImages)
 
                   if(!myImages.data.success){
+                    console.log("If")
                     setFiles([]);
                     setError(myImages.data.message);
                     return;
@@ -113,13 +117,13 @@ function Content() {
                         action: "saved"
                     } 
                   });
-
-                  if(!myImages.data.success){
+                  
+                  if(!myImages.data.success){                    
                     setFiles([]);
                     setError(myImages.data.message);
                     return;
                   }
-        
+                  
                   setFiles(myImages.data.images);
                 }
                 catch(err){
@@ -182,7 +186,7 @@ function Content() {
                             files.length === 0?
                             null
                             :
-                            files.map(img => <Image img={img}/>)
+                            files.map(img => <Image img={img} key={img._id}/>)
                             
                         }
                     </Masonry>

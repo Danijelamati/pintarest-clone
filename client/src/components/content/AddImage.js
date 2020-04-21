@@ -3,6 +3,7 @@ import Modal from "react-modal";
 import axios from "axios";
 
 import {UserContext} from "../Home";
+import "../css/Add.scss";
 
 const customStyles = {
     content : {
@@ -31,6 +32,7 @@ function AddImage() {
     useEffect( () => {
         setImage(imageDef);
         setError("");
+        Modal.setAppElement("body");
     },[addModal]);
    
 
@@ -97,7 +99,7 @@ function AddImage() {
 
 
     return (
-        <div add-wrapper>
+        <div className="add-wrapper">
             <div className="add" onClick={openAddModal}>+</div>
             <Modal
               isOpen={addModal}                    

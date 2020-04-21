@@ -20,7 +20,7 @@ module.exports = function google (app){
             const {access_token} = req.query;
             
             if(!access_token){
-                return res.status(401).json({"success" : false, "message": "invalid signin"});
+                return res.json({"success" : false, "message": "invalid signin"});
             }
             
             const getUser = await axios({
@@ -33,7 +33,7 @@ module.exports = function google (app){
               }); 
             
             if(!getUser){
-                return res.status(401).json({success : false, "message": "invalid signin"});
+                return res.json({success : false, "message": "invalid signin"});
             }
 
             const {data} = getUser;            
@@ -74,7 +74,7 @@ module.exports = function google (app){
 
         } catch (error) {
             console.log(error);
-            return res.status(500).json({success: "false", message:"server error"});
+            return res.json({success: "false", message:"server error"});
         }
     });
 

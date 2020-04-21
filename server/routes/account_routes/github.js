@@ -20,7 +20,7 @@ module.exports = function(app){
         const {code} = req.query;       
         
         if(!code){
-          return res.status(401).json({"success" : false, "message": "invalid signin"});
+          return res.json({"success" : false, "message": "invalid signin"});
         }
 
         const getToken = await axios({
@@ -37,7 +37,7 @@ module.exports = function(app){
         const accessToken = getToken.data.split(/[=&]/g)[1];
         
         if(!accessToken){
-          return res.status(401).json({"success" : false, "message": "invalid signin"});
+          return res.json({"success" : false, "message": "invalid signin"});
         }
             
         const getUser = await axios({
@@ -50,7 +50,7 @@ module.exports = function(app){
         });        
 
         if(!getUser){
-          return res.status(401).json({success : false, "message": "invalid signin"});
+          return res.json({success : false, "message": "invalid signin"});
         }
 
         const {data} = getUser; 
@@ -93,7 +93,7 @@ module.exports = function(app){
       }
       catch(err){
         console.log(err);
-        return res.status(500).json({success: "false", message:"server error"});
+        return res.json({success: "false", message:"server error"});
       }
         
 

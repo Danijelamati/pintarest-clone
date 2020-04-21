@@ -8,7 +8,7 @@ module.exports = async function(req,res,next){
         const find = await UserSession.findById(token);
         
         if(!find  || (userName !== find.userName)){
-            return res.status(403).json({"success": false, "message": "access denied"});
+            return res.json({"success": false, "message": "access denied"});
         }  
 
         req.findSession = find;
@@ -17,6 +17,6 @@ module.exports = async function(req,res,next){
     }
     catch(err){
         console.log(err);
-        return res.status(500).json({error: "server error"});
+        return res.json({error: "server error"});
     }
 };

@@ -2,13 +2,12 @@ const checkCredentials = require("../../middleware/checkCredentials");
 const imageModel = require("../../models/ImageModel");
 
 module.exports = function(app){
-    app.delete("/image/comment",checkCredentials, async(req,res)=> {
+    app.put("/image/comment/edit",checkCredentials, async(req,res)=> {
         try {
 
-            const{userName,token,imageId,commentId} = req.body;   
-            const{findSession} = req;
+            const{userName,imageId,commentId, text} = req.body;             
 
-            if(!userName || !imageId || !token || !imageId || !commentId || !findSession){
+            if(!userName || !imageId || !commentId || !text){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -24,17 +23,18 @@ module.exports = function(app){
                 return res.json({"success": false,error: "server error"});
             }
 
-            if(image.comments[index].author !== userName && findSession.auth !=="admin"){
+            if(image.comments[index].author !== userName){
                 return res.json({"success": false,"message": "action denied"});
             }
             
-            image.comments.splice(index,1); 
+            image.comments[index].text = text;
+            image.comments[index].editedOn = new Date();
             
             image.markModified("comments");
 
             await image.save();
 
-            return res.json({"success": true, "message": "comment deleted"});
+            return res.json({"success": true, "message": "comment edited"});
 
 
         } catch (error) {

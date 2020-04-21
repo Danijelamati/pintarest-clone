@@ -9,7 +9,7 @@ module.exports = function(app){
             let images = await imageModel.find({});
 
             if(!images){
-                return res.status(500).json({"success": false, "message": "server error"});
+                return res.json({"success": false, "message": "server error"});
             }
             
             images = images
@@ -29,7 +29,7 @@ module.exports = function(app){
         }
         catch(err){
             console.log(err);
-            return res.status(500).json({"success": false, "message": "server error"});
+            return res.json({"success": false, "message": "server error"});
         }
 
 

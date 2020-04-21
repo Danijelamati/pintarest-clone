@@ -10,9 +10,9 @@ module.exports = function(app){
         try{
             const {password} = req.body;            
             let {email} = req.body;  
-
+            console.log("here");
             if(!email || !password){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
 
             email.toLowerCase().trim();
@@ -20,19 +20,19 @@ module.exports = function(app){
             const valid = validator.validate(email);
            
             if(!valid){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
   
             const user = await emailUser.findOne({email});
 
             if(!user){
-                return res.status(401).json({"success": false, "message": "Invalid email"});
+                return res.json({"success": false, "message": "Invalid email"});
             }
 
             const compareHash = await compare(password, user.password);
             
             if(!compareHash){
-                return res.status(401).json({"success": false, "message": "Invalid password"});
+                return res.json({"success": false, "message": "Invalid password"});
             }
    
             const session = new UserSession({
@@ -48,7 +48,7 @@ module.exports = function(app){
         }
         catch(err){
             console.log(err);
-            return res.status(500).json({"success": false, "message": "Server error"});
+            return res.json({"success": false, "message": "Server error"});
         }
     });
     

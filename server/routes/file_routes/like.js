@@ -9,17 +9,17 @@ module.exports = function(app){
             const {findSession} = req;
             
             if(!token || !userName || !action || !imageId || !findSession ){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             if(!action === "like" && !action==="unlike"){
-                return res.status(401).json({"success": false, message:"invalid credentials"});
+                return res.json({"success": false, message:"invalid credentials"});
             }
 
             const image = await imageModel.findById(imageId);
 
             if(!image){
-                return res.status(500).json({"success": false, "message": "server error"}); 
+                return res.json({"success": false, "message": "server error"}); 
             }
 
             const index = image.likes.indexOf(userName);
@@ -39,7 +39,7 @@ module.exports = function(app){
             }
 
             if(index !== -1){
-                return res.status(401).json({"success": false, "message": "allready liked"});
+                return res.json({"success": false, "message": "allready liked"});
             }
 
             image.likes = [...image.likes, userName];
@@ -51,7 +51,7 @@ module.exports = function(app){
 
         }catch(err){
             console.log(err);
-            return res.status(500).json({"success": false, "message": "server error"});
+            return res.json({"success": false, "message": "server error"});
         }
     })
 }

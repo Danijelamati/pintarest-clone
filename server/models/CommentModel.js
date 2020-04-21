@@ -4,7 +4,8 @@ const {Schema} = require("mongoose");
 const replySchema = new Schema({
     text: String,
     createdOn: Date,
-    author: String
+    author: String,
+    editedOn: Date
  });
 
  const replyModel = mongoose.model("replyModel", replySchema);
@@ -16,7 +17,8 @@ const commentSchema = new Schema({
         type: [replySchema],
         default: []
     },
-    author: String
+    author: String,
+    editedOn: Date
 });
 
 const commentModel = mongoose.model("commentModel", commentSchema);

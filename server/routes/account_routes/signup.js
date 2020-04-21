@@ -11,26 +11,26 @@ module.exports = function (app){
             const {password, userName} = req.body;
             let {email} = req.body;  
                 
-            if(!email || !password || !userName) return res.status(401).json({"success" : false, "message": "Fields cannot be blank"});
+            if(!email || !password || !userName) return res.json({"success" : false, "message": "Fields cannot be blank"});
 
             email.toLowerCase().trim();
 
             const valid = validator.validate(email);
            
             if(!valid){
-                return res.status(401).json({"success" : false, "message": "Invalid email"});
+                return res.json({"success" : false, "message": "Invalid email"});
             }
 
             const find = await emailUser.findOne({email});          
 
             if(find){
-                return res.status(401).json({"success" : false, "message" : "User with that email exists"});
+                return res.json({"success" : false, "message" : "User with that email exists"});
             }      
             
             const findUserName = await UserSession.findOne({userName});
 
             if(find){
-                return res.status(401).json({"success" : false, "message" : "User name exists"});
+                return res.json({"success" : false, "message" : "User name exists"});
             } 
             
             const hashedPassword = await crypt.hash(password);            
@@ -58,7 +58,7 @@ module.exports = function (app){
         }
         catch(err){
             console.log(err);
-            res.status(500).json({"success" : false, "message" : "Server error"});
+            res.json({"success" : false, "message" : "Server error"});
         }
     });
 

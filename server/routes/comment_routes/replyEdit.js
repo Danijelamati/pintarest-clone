@@ -3,12 +3,11 @@ const imageModel = require("../../models/ImageModel");
 
 module.exports = function(app){
     
-    app.delete("/image/reply", checkCredentials, async (req,res) => {
+    app.put("/image/reply/edit", checkCredentials, async (req,res) => {
         try {
-            const {token,userName,imageId,commentId,replyId} = req.body;  
-            const{findSession} = req;              
+            const {userName,imageId,commentId,replyId,text} = req.body;                   
 
-            if(!token || !userName || !imageId || !commentId || !replyId || !findSession ){
+            if(!userName || !imageId || !commentId || !replyId || !text ){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -30,17 +29,18 @@ module.exports = function(app){
                 return res.json({"success": false,error: "server error"});
             }
             
-            if(image.comments[commentIndex].replies[replyIndex].author !== userName && findSession.auth !=="admin"){
+            if(image.comments[commentIndex].replies[replyIndex].author !== userName){
                 return res.json({"success": false,"message": "action denied"});
             }
 
-            image.comments[commentIndex].replies.splice(replyIndex,1);
+            image.comments[commentIndex].replies[replyIndex].text = "edited reply";
+            image.comments[commentIndex].replies[replyIndex].editedOn = new Date();
             
             image.markModified("comments");
 
             await image.save();
 
-            return res.json({"success": true, "message": "reply deleted"});
+            return res.json({"success": true, "message": "reply edited"});
 
 
         } catch (error) {

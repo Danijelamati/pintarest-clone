@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import Modal from "react-modal";
 
 import PinIt from "./PinIt";
@@ -23,6 +23,12 @@ function Image(props) {
 
     const [seeImageModal, seeImageModalOpen] = useState(false);
     const userContext = useContext(UserContext);  
+
+    useEffect(
+        ()=>{
+            Modal.setAppElement("body");
+        },[]
+    );
     
 
     const openSeeImageModal = () => {

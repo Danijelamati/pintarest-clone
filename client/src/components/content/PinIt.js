@@ -10,8 +10,7 @@ function PinIt(props) {
    
     
     useEffect(
-        () => {
-            console.log("pinnnnn")
+        () => {            
             const index = userContext.user.savedPins.indexOf(props.imgId);
             if (index === -1){
                 setPin("PIN");
@@ -25,7 +24,7 @@ function PinIt(props) {
     );
     
        
-    const handleClick = async (event,user,imageId,pin) => {
+    const handleClick = async (event,user,imageId,pin,setUser) => {
         try{
             event.preventDefault();              
            
@@ -45,9 +44,22 @@ function PinIt(props) {
 
             if(!task.data.success){
                 return;
+            }            
+
+            setPin(task.data.setAction);    
+            
+            if(task.data.setAction ==="UNPIN"){
+                setUser( user => ({...user, savedPins : [...user.savedPins, imageId]}));               
+                return;
             }
 
-            setPin(task.data.setAction);          
+            setUser( user => {
+                const changedUser = user;               
+                const index = changedUser.savedPins.indexOf(imageId);
+                changedUser.savedPins.splice(index, 1);
+                return changedUser;
+            });
+
 
             
         }
@@ -58,7 +70,7 @@ function PinIt(props) {
     }
 
     return (
-        <div className="save" onClick={event => handleClick(event,userContext.user,props.imgId,pin)}>
+        <div className="save" onClick={event => handleClick(event,userContext.user,props.imgId,pin,userContext.setUser)}>
             {pin}
         </div>
     );

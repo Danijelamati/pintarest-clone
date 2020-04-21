@@ -10,19 +10,19 @@ module.exports = function(app){
             const {findSession} = req;
             
             if(!token || !userName || !imageId || !commentId || !reply || !findSession){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             const image = await ImageModel.findById(imageId);
 
             if(!image){
-                return res.status(500).json({"success": false,error: "server error"});
+                return res.json({"success": false,error: "server error"});
             }
             
             const index = image.comments.findIndex( comm => comm._id == commentId);
             
             if(index === -1){
-                return res.status(500).json({"success": false,error: "server error"});
+                return res.json({"success": false,error: "server error"});
             }
 
             const replyObj = new replyModel({
@@ -40,7 +40,7 @@ module.exports = function(app){
             return res.json({"success": true, "message": "replied", "reply": replyObj});
         }catch(err){
             console.log(err);
-            return res.status(500).json({"success": false,error: "server error"});
+            return res.json({"success": false,error: "server error"});
         }
     });
 }

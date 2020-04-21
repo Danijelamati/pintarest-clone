@@ -1,7 +1,6 @@
 import React, {createContext, useState , useEffect} from 'react';
 import axios from "axios";
 
-import './css/Home.scss';
 import Header from "./Header";
 import Content from "./content/Content";
 import AddImage from './content/AddImage';

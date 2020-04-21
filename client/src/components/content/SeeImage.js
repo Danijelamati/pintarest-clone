@@ -17,7 +17,6 @@ function SeeImage(props) {
     
     useEffect( ()=> {
         console.log("useEffect");
-        
         ( async () => {
             try{
 

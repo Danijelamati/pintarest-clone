@@ -13,11 +13,11 @@ module.exports = function(app){
             let {findSession} = req;
 
             if(!userName || !token || !img || !title){
-                return res.status(401).json({"success": false, "message": "Invalid input"});
+                return res.json({"success": false, "message": "Invalid input"});
             }
 
             if(!findSession){
-                return res.status(500).json({"success": false,error: "server error"});
+                return res.json({"success": false,error: "server error"});
             }    
     
             const type = img.split(".")[1];  
@@ -47,7 +47,7 @@ module.exports = function(app){
             let findUser = await auth.findById(findSession.userId);
 
             if(!findUser){
-                return res.status(500).json({"success": false,error: "server error"});
+                return res.json({"success": false,error: "server error"});
             }
 
             findUser.images.push(newImage.id);
@@ -59,7 +59,7 @@ module.exports = function(app){
         }
         catch(err){
             console.log(err);
-            return res.status(500).json({"success": false,"error": "server error"});
+            return res.json({"success": false,"error": "server error"});
         }
         
     });

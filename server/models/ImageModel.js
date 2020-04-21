@@ -9,7 +9,8 @@ const imageSchema = new Schema({
     title: String,
     text: String,
     createdOn: Date,
-    auth: String
+    auth: String,
+    editedOn: Date
 });
 
 imageSchema.index({"owner": "text", "title": "text", "text": "text"});

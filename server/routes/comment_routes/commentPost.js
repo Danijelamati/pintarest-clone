@@ -10,13 +10,13 @@ module.exports = function(app){
             const {findSession} = req;
             
             if(!token || !userName || !imageId || !comment || !findSession){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             const image = await ImageModel.findById(imageId);
 
             if(!image){
-                return res.status(500).json({"success": false,error: "server error"});
+                return res.json({"success": false,error: "server error"});
             }
             
             let newComment = new commentModel({
@@ -33,7 +33,7 @@ module.exports = function(app){
             return res.json({"success": true, "message": "commented", newComment});
         }catch(err){
             console.log(err);
-            return res.status(500).json({"success": false,error: "server error"});
+            return res.json({"success": false,error: "server error"});
         }
     });
 }

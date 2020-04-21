@@ -16,14 +16,14 @@ const LogIn = () => {
     const logIn = async(event,logInfo) => {
         try {
             event.preventDefault();
-       
+            
             const logIn = await axios({
                 method: "post",
                 url: "/account/login",                
                 headers : {"Content-Type":"application/json"},
                 data: logInfo
             });
-
+            
             if(!logIn.data.success){
                 setError(logIn.data.message);
                 return;

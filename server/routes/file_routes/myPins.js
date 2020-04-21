@@ -12,24 +12,25 @@ module.exports = function(app){
     app.get("/user/mypins",checkCredentials, async (req,res) => {
         try{
             const {token,action} = req.query;
-            const {findSession} = req;    
-            
+            const {findSession} = req; 
+               
             if(!token  || !findSession || !action){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             const act = actionType.get(action) || "";
 
             if(!act){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             const auth = authType.get(findSession.auth);
 
             const findUser = await auth.findById(findSession.userId);
-
+       
             if(!findUser){
-                return res.status(500).json({"success": false,error: "server error"});
+                
+                return res.json({"success": false,error: "server error"});
             }
 
             if(findUser[act] === []){
@@ -37,8 +38,8 @@ module.exports = function(app){
             }           
 
             const images = await ImageModel.find().where('_id').in(findUser[act]).exec();
-            
-            return res.status(500).json({"success": true, "images": images});
+         
+            return res.json({"success": true, "images": images});
 
         }
         catch(err){

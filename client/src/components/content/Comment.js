@@ -19,7 +19,7 @@ function Comment(props) {
         
     },[refresh]);
 
-    const addReply = async(event,imageId,commentId, reply, user, setComment,setRefresh) => {
+    const addReply = async(event,imageId,commentId, reply, user, setComment,setRefresh,setReply) => {
         try{            
             event.preventDefault();
 
@@ -49,7 +49,7 @@ function Comment(props) {
             });
             
             setRefresh( r => r+1);
-
+            setReply("");
            
         }catch(err){
             return;
@@ -112,7 +112,7 @@ function Comment(props) {
             </div>
             {
                 comment.replies.length > 0 ?
-                comment.replies.map(reply => <Reply reply={reply} imageId={imageId} commentId={comment._id} setRefresh={setRefresh} setComment={setComment}/>)
+                comment.replies.map(reply => <Reply reply={reply} key={reply._id} imageId={imageId} commentId={comment._id} setRefresh={setRefresh} setComment={setComment}/>)
                 :
                 null
             }
@@ -121,10 +121,10 @@ function Comment(props) {
                 userContext.user.stage === "signed" ?
 
                 <form className="reply-add-container">
-                    <textarea className="reply-add" placeholder="add your reply here..." onChange={(event) => setReply(event.target.value)} required>
+                    <textarea className="reply-add" value={reply} placeholder="add your reply here..." onChange={(event) => setReply(event.target.value)} required>
 
                     </textarea>
-                    <button type="reply-submit" onClick={event => addReply(event,imageId,comment._id,reply,userContext.user,setComment,setRefresh)}>
+                    <button type="reply-submit" onClick={event => addReply(event,imageId,comment._id,reply,userContext.user,setComment,setRefresh,setReply)}>
                         Reply
                     </button>
                 </form>

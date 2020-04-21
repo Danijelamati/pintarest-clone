@@ -10,25 +10,25 @@ module.exports = function(app){
             const {token} = req.query;   
             
             if(!token || !ObjectId.isValid(token)){
-                return res.status(403).json({"success" : false, "message" : "Invalid token"});
+                return res.json({"success" : false, "message" : "Invalid token"});
             }
             
             const findSession = await UserSession.findById(token);
 
             if(!findSession){
-                return res.status(403).json({"success" : false, "message" : "Invalid token"});
+                return res.json({"success" : false, "message" : "Invalid token"});
             }            
            
             const auth = authType.get(findSession.auth) || "";
 
             if(!auth){
-                return res.status(500).json({"success": false, "message" : "server error"});
+                return res.json({"success": false, "message" : "server error"});
             }
 
             const user = await auth.findById(findSession.userId);
 
             if(!user){
-                return res.status(500).json({"success": false, "message" : "server error"});
+                return res.json({"success": false, "message" : "server error"});
             }
 
             let adminPrivilages = false;
@@ -42,7 +42,7 @@ module.exports = function(app){
         }
         catch(err){
             console.log(err);
-            res.status(500).json({"success": false, "message": "Server error"});
+            res.json({"success": false, "message": "Server error"});
         }
 
         

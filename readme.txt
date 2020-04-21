@@ -39,42 +39,24 @@ Anonimus users can see images and search for particular images
 Can see image details, comments and replies 
 
 
+Implemented and tested on server but not implemented on front end:
+
+Changing password for email and admin users
+
+Ability to edit image, comment or reply
+
+
+
 
 Used technologies:
 
 nodejs with express
 
-helmetjs:
+mongodb for storing data
 
-Used for security 
+AWS s3 for storing images
 
-mongoose:
-
-Used for storing data in mongodb atlas
-
-bcryptjs:
-
-Used for hashing and comparing passwords
-
-AWS s3:
-
-Used for storing images
-
-Reactjs(hooks):
-
-Used for frontend
-
-axios:
-
-Used for making http requests
-
-masonry:
-
-For grid layout for images
-
-bodyparser:
-
-For parsing request bodies
+front end Reactjs(hooks)
 
 
 
@@ -82,9 +64,9 @@ Plans for future:
 
 This is incomplete project and some stuff was hurried up to be somewhat ready for deadline
 
-Fixing bugs (time,new reply and comment, there are many...)
+Fix markdown in about
 
-Making so user cant signup with email and use same email to signup with google and other way around
+Making so user cant signup with same email on google and regular email/password signup
 
 Making so that email user cant have same username as github or google users
 
@@ -92,11 +74,9 @@ When user or admin deletes comment or reply only text from comment/reply gets de
 
 Adding ability to user to see his account with more details
 
-Adding user ability to change password, edit images,comments,replies
-
 Adding ability to admin to delete user accounts
 
-Adding image adds to render between user images
+Adding image ads to render between user images
 
 Adding new signup possibilites(facebook, etc...)
 

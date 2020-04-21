@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Modal from "react-modal";
 import About from './About';
 
@@ -15,6 +15,12 @@ const customStyles = {
 function AboutButton() {
 
     const [aboutModal, aboutModalOpen] = useState(false); 
+
+    useEffect(
+        ()=>{
+            Modal.setAppElement("body");
+        },[]
+    )
     
 
     function openAboutModal() {

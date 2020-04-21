@@ -14,7 +14,7 @@ module.exports = function(app){
             const{findSession} = req;
 
             if(!userName || !token || !findSession){
-                return res.status(401).json({"success": false, "message": "invalid credentials"});
+                return res.json({"success": false, "message": "invalid credentials"});
             }
 
             const auth = authType.get(findSession.auth);
@@ -22,7 +22,7 @@ module.exports = function(app){
             const user = await auth.findById(findSession.userId);
 
             if(!user){
-                return res.status(500).json({"success": false,"message": "server error"});
+                return res.json({"success": false,"message": "server error"});
             }
             
             if(user.images.length > 0){
@@ -38,7 +38,7 @@ module.exports = function(app){
                 }, (err, res) => {
                     if(err){
                         console.log(err);
-                        return res.status(500).json({"success": false,"message": "server error"});
+                        return res.json({"success": false,"message": "server error"});
                     }
 
                 });
@@ -54,7 +54,7 @@ module.exports = function(app){
            
         }catch(err){
             console.log(err);
-            return res.status(500).json({"success": false,"message": "server error"});
+            return res.json({"success": false,"message": "server error"});
         }
     })
 };

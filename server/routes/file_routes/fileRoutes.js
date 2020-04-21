@@ -6,6 +6,7 @@ const imageDetails = require("./imageDetails");
 const like = require("./like");
 const search = require("./search");
 const imageDelete= require("./imageDelete");
+const imageEdit = require("./imageEdit"); 
 
 module.exports = function(app){
 
@@ -24,5 +25,7 @@ module.exports = function(app){
   search(app);
 
   imageDelete(app);
+
+  imageEdit(app);
   
 };

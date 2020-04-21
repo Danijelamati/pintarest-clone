@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 function About() {
 
@@ -36,7 +37,7 @@ function About() {
                 error ?
                 error
                 :
-                <p className="about-text">{text}</p>
+                <ReactMarkdown source={text}/>
             }            
         </div>
     );

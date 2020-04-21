@@ -18,7 +18,7 @@ function Comments(props) {
         
     },[allComments]);
 
-    const addComment = async(event,imageId,comment,user,setAllComments) => {
+    const addComment = async(event,imageId,comment,user,setAllComments,setNewComment) => {
         try{
             event.preventDefault();
             
@@ -35,6 +35,7 @@ function Comments(props) {
             });
 
             setAllComments(comm =>[...comm,postComment.data.newComment]);
+            setNewComment("");
         }catch(err){
             return;
         }       
@@ -45,17 +46,17 @@ function Comments(props) {
         <div className="comments">            
             {
                 allComments.length !== 0 ?
-                allComments.map(comm => <Comment comment={comm} imageId={imageId} setAllComments={setAllComments} />)
+                allComments.map(comm => <Comment comment={comm} key={comm._id} imageId={imageId} setAllComments={setAllComments} />)
                 :
                 null
             }
             {
                         userContext.user.stage === "signed" ?
                         <form className="comment-add-container">
-                            <textarea className="comment-add" placeholder="add your comment here..." onChange={(event) => setNewComment(event.target.value)} required>
+                            <textarea className="comment-add" value={newComment} placeholder="add your comment here..." onChange={(event) => setNewComment(event.target.value)} required>
 
                             </textarea>
-                            <button className="comment-submit" onClick={event => addComment(event,imageId,newComment,userContext.user,setAllComments)}>
+                            <button className="comment-submit" onClick={event => addComment(event,imageId,newComment,userContext.user,setAllComments,setNewComment)}>
                                 Comment
                             </button>
                         </form>
