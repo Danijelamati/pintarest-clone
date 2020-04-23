@@ -13,19 +13,19 @@ module.exports = function(app){
                 return res.json({"success" : false, "message" : "Invalid token"});
             }
             
-            const findSession = await UserSession.findById(token);
+            const session = await UserSession.findById(token);
 
-            if(!findSession){
+            if(!session){
                 return res.json({"success" : false, "message" : "Invalid token"});
             }            
            
-            const auth = authType.get(findSession.auth) || "";
+            const auth = authType.get(session.auth) || "";
 
             if(!auth){
                 return res.json({"success": false, "message" : "server error"});
             }
 
-            const user = await auth.findById(findSession.userId);
+            const user = await auth.findById(session.userId);
 
             if(!user){
                 return res.json({"success": false, "message" : "server error"});
@@ -33,11 +33,11 @@ module.exports = function(app){
 
             let adminPrivilages = false;
 
-            if(findSession.auth === "admin"){
+            if(session.auth === "admin"){
                 adminPrivilages= true;
             }
            
-            return res.json({"success" : true, "message" : "Verified", "user" : findSession.userName, savedPins: user.saved, adminPrivilages});
+            return res.json({"success" : true, "message" : "Verified", "user" : session.userName, savedPins: user.saved, adminPrivilages});
 
         }
         catch(err){

@@ -5,13 +5,13 @@ module.exports = async function(req,res,next){
         const userName = req.query.userName || req.body.userName;
         const token = req.query.token || req.body.token;
 
-        const find = await UserSession.findById(token);
+        const session = await UserSession.findById(token);
         
-        if(!find  || (userName !== find.userName)){
+        if(!session  || (userName !== session.userName)){
             return res.json({"success": false, "message": "access denied"});
         }  
 
-        req.findSession = find;
+        req.session = session;
 
         next();
     }

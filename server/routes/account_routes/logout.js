@@ -1,5 +1,6 @@
 const UserSession = require("../../models/UserSession");
 const {ObjectId} = require('mongoose').Types;
+const {clearHash} = require("../../services/redisCache"); 
 
 module.exports = function(app){
 

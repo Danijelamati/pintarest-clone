@@ -1,14 +1,15 @@
 const checkCredentials = require("../../middleware/checkCredentials");
 const imageModel = require("../../models/ImageModel");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     
     app.delete("/image/reply", checkCredentials, async (req,res) => {
         try {
-            const {token,userName,imageId,commentId,replyId} = req.body;  
-            const{findSession} = req;              
+            const {userName,imageId,commentId,replyId} = req.body;  
+            const{session} = req;              
 
-            if(!token || !userName || !imageId || !commentId || !replyId || !findSession ){
+            if(!userName || !imageId || !commentId || !replyId || !session ){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -30,7 +31,7 @@ module.exports = function(app){
                 return res.json({"success": false,error: "server error"});
             }
             
-            if(image.comments[commentIndex].replies[replyIndex].author !== userName && findSession.auth !=="admin"){
+            if(image.comments[commentIndex].replies[replyIndex].author !== userName && session.auth !=="admin"){
                 return res.json({"success": false,"message": "action denied"});
             }
 
@@ -39,6 +40,8 @@ module.exports = function(app){
             image.markModified("comments");
 
             await image.save();
+
+            clearHash(`image/${imageId}`);
 
             return res.json({"success": true, "message": "reply deleted"});
 

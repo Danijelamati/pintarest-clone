@@ -1,15 +1,16 @@
 const checkCredentials = require("../../middleware/checkCredentials");
 const ImageModel = require("../../models/ImageModel");
 const {replyModel} = require("../../models/CommentModel");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     app.post("/image/reply",checkCredentials, async (req,res) => {
 
         try{
-            const {token,userName,imageId,commentId,reply} = req.body;
-            const {findSession} = req;
+            const {userName,imageId,commentId,reply} = req.body;
+           
             
-            if(!token || !userName || !imageId || !commentId || !reply || !findSession){
+            if(!userName || !imageId || !commentId || !reply ){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -36,6 +37,8 @@ module.exports = function(app){
             image.markModified("comments");
 
             await image.save();
+
+            clearHash(`image/${imageId}`);
             
             return res.json({"success": true, "message": "replied", "reply": replyObj});
         }catch(err){

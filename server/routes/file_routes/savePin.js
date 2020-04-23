@@ -5,11 +5,11 @@ module.exports = function(app){
 
         app.post("/user/savepin",checkCredentials, async (req,res) => {
             try{
-                const {token,imageId,action} = req.body;
+                const {imageId,action} = req.body;
                 
-                const {findSession} = req;
+                const {session} = req;
 
-                if(!token || !imageId || !action || !findSession){
+                if( !imageId || !action || !session){
                     return res.json({"success": false, message:"server error"});
                 }
 
@@ -17,9 +17,9 @@ module.exports = function(app){
                     return res.json({"success": false, message:"invalid credentials"});
                 }
 
-                const auth = authType.get(findSession.auth);
+                const auth = authType.get(session.auth);
 
-                const findUser = await auth.findById(findSession.userId);
+                const findUser = await auth.findById(session.userId);
 
                 if(!findUser){
                     return res.json({"success": false, message: "server error"});

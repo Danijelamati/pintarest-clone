@@ -8,19 +8,19 @@ module.exports = function(app){
         try {
             const {userName, oldPass, newPass} = req.body;
 
-            const{findSession} = req;
+            const{session} = req;
 
-            if(!userName || !oldPass || !newPass || !findSession){
+            if(!userName || !oldPass || !newPass || !session){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
-            if(!findSession.auth === "admin" && !findSession.auth === "email"){
+            if(!session.auth === "admin" && !session.auth === "email"){
                 return res.json({"success": false, "message": "invalid user"});
             }
 
-            const auth = authType.get(findSession.auth);
+            const auth = authType.get(session.auth);
 
-            let user = await auth.findById(findSession.userId);
+            let user = await auth.findById(session.userId);
 
             if(!user){
                 return res.json({"success": false,"message": "server error"});

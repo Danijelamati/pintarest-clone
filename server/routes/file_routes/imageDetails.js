@@ -10,7 +10,7 @@ module.exports = function(app){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
-            const image = await imageModel.findById(imageId);
+            const image = await imageModel.findById(imageId).cache({key : `image/${imageId}`});
 
             if(!image){                
                 return res.json({"success": false,"error": "server error"});

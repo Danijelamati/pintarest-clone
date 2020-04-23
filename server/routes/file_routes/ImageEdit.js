@@ -1,5 +1,6 @@
 const checkCredentials = require("../../middleware/checkCredentials");
 const imageModel = require("../../models/ImageModel");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     app.put("/image/edit", checkCredentials, async(req,res)=> {
@@ -26,8 +27,10 @@ module.exports = function(app){
 
             await image.save();
 
-            return res.json({"success": true, "message": "image edited"});
+            clearHash(`image/${imageId}`);
 
+            return res.json({"success": true, "message": "image edited"});           
+            
 
         } catch (error) {
             console.log(error);

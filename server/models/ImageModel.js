@@ -15,5 +15,5 @@ const imageSchema = new Schema({
 
 imageSchema.index({"owner": "text", "title": "text", "text": "text"});
 
-module.exports = mongoose.model("imageSchema", imageSchema);
+module.exports = mongoose.model("imageModel", imageSchema);
 

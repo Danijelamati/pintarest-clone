@@ -3,15 +3,20 @@ const {s3Details} = require("../../util/config");
 const s3 = require("../../util/awsS3");
 const checkCredentials= require("../../middleware/checkCredentials");
 const authType = require("../../util/authType"); 
+const {clearHash} = require("../../services/redisCache");
+const {promisify} = require("util");
+
+s3.deleteObject = promisify(s3.deleteObject);
+
 
 module.exports = function(app){
     app.delete("/image/delete",checkCredentials, async (req,res) => {
         try{
-            const {userName,token,imageId} = req.body;
+            const {userName,imageId} = req.body;
             
-            const {findSession} = req;
+            const {session} = req;
     
-            if(!userName || !token || !imageId || !findSession){
+            if(!userName || !imageId || !session){
                 return res.json({"success": false, "message": "invalid credentials"});
             }            
     
@@ -21,17 +26,17 @@ module.exports = function(app){
                 return res.json({"success": false,"message": "server error"});
             }
 
-            if(image.owner !== userName && findSession.auth !=="admin"){
+            if(image.owner !== userName && session.auth !=="admin"){
                 return res.json({"success": false,"message": "action denied"});
             }
 
             const Key = image.location.replace(s3Details.bucketURL,"");
 
-            let auth = authType.get(findSession.auth);
+            let auth = authType.get(session.auth);
 
             let user =[];
 
-            if(findSession.auth==="admin"){   
+            if(session.auth==="admin"){   
          
                 auth = authType.get(image.auth);
                 user = await auth.findOne({userName: image.owner});
@@ -42,7 +47,7 @@ module.exports = function(app){
             }
             
             if(user.length === 0){          
-                user = await auth.findById(findSession.userId);
+                user = await auth.findById(session.userId);
             }  
           
             const index = user.images.indexOf(imageId);
@@ -53,24 +58,20 @@ module.exports = function(app){
          
             user.images.splice(index,1);
 
-            user.markModified("images");
+            user.markModified("images");           
             
-            // promise dont work for some reason, same response but they dont delete object
-            // so callback is used here
-            s3.deleteObject({
+
+            await s3.deleteObject({
                 Bucket: s3Details.bucketName,
                 Key
-            }, (err,res) => {
-                if(err){
-                    console.log(err);
-                    return res.json({"success": false,"message": "server error"});
-                }
-                
-            });   
+            });
             
             await image.delete();
             
             await user.save();
+
+            clearHash("content");
+            clearHash(`image/${imageId}`);
 
             return res.json({"success": true,"message": "deleted"});
             

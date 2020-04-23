@@ -5,23 +5,32 @@ const checkCredentials = require("../../middleware/checkCredentials");
 const ImageModel = require("../../models/ImageModel");
 const authType = require("../../util/authType");
 const s3 = require("../../util/awsS3");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     app.get("/image/upload",checkCredentials, async (req,res) => {
         try{            
-            const {userName, token, img, text, title} = req.query;
-            let {findSession} = req;
+            const {userName, img, text, title} = req.query;
+            let {session} = req;
 
-            if(!userName || !token || !img || !title){
+            if(!userName || !img || !title){
                 return res.json({"success": false, "message": "Invalid input"});
             }
 
-            if(!findSession){
+            if(!session){
                 return res.json({"success": false,error: "server error"});
-            }    
+            }
+
+            const auth = authType.get(session.auth);            
+
+            let user = await auth.findById(session.userId);
+
+            if(!user){
+                return res.json({"success": false,error: "server error"});
+            }                
     
             const type = img.split(".")[1];  
-            const key = `${token}/${uuid()}.${type}`;
+            const key = `${user._id}/${uuid()}.${type}`;
 
             const url = await s3.getSignedUrl("putObject", {
                 Bucket: s3Details.bucketName,
@@ -37,22 +46,18 @@ module.exports = function(app){
                 createdOn: new Date(),
                 title,
                 text,
-                auth: findSession.auth
+                auth: session.auth
             });
             
             await newImage.save();            
 
-            const auth = authType.get(findSession.auth);            
+            
 
-            let findUser = await auth.findById(findSession.userId);
+            user.images.push(newImage.id);
 
-            if(!findUser){
-                return res.json({"success": false,error: "server error"});
-            }
+            await user.save();
 
-            findUser.images.push(newImage.id);
-
-            await findUser.save();
+            clearHash("content");
 
             return res.json({"success": true, "url": url});
             
@@ -60,7 +65,7 @@ module.exports = function(app){
         catch(err){
             console.log(err);
             return res.json({"success": false,"error": "server error"});
-        }
+        }       
         
     });
     

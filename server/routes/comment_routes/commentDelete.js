@@ -1,14 +1,15 @@
 const checkCredentials = require("../../middleware/checkCredentials");
 const imageModel = require("../../models/ImageModel");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     app.delete("/image/comment",checkCredentials, async(req,res)=> {
         try {
 
-            const{userName,token,imageId,commentId} = req.body;   
-            const{findSession} = req;
+            const{userName,imageId,commentId} = req.body;   
+            const{session} = req;
 
-            if(!userName || !imageId || !token || !imageId || !commentId || !findSession){
+            if(!userName || !imageId  || !imageId || !commentId || !session){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -24,7 +25,7 @@ module.exports = function(app){
                 return res.json({"success": false,error: "server error"});
             }
 
-            if(image.comments[index].author !== userName && findSession.auth !=="admin"){
+            if(image.comments[index].author !== userName && session.auth !=="admin"){
                 return res.json({"success": false,"message": "action denied"});
             }
             
@@ -33,6 +34,8 @@ module.exports = function(app){
             image.markModified("comments");
 
             await image.save();
+
+            clearHash(`image/${imageId}`);
 
             return res.json({"success": true, "message": "comment deleted"});
 

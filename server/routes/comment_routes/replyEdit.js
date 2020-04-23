@@ -1,5 +1,6 @@
 const checkCredentials = require("../../middleware/checkCredentials");
 const imageModel = require("../../models/ImageModel");
+const {clearHash} = require("../../services/redisCache");
 
 module.exports = function(app){
     
@@ -39,6 +40,8 @@ module.exports = function(app){
             image.markModified("comments");
 
             await image.save();
+
+            clearHash(`image/${imageId}`);
 
             return res.json({"success": true, "message": "reply edited"});
 

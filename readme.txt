@@ -58,11 +58,10 @@ AWS s3 for storing images
 
 front end Reactjs(hooks)
 
+redis for data caching
 
 
 Plans for future:
-
-This is incomplete project and some stuff was hurried up to be somewhat ready for deadline
 
 Fix markdown in about
 
@@ -83,6 +82,8 @@ Adding new signup possibilites(facebook, etc...)
 Making server https
 
 Adding redis in-memory data structure store
+
+Adding redux
 
 Use masonary to sort images based on height
 

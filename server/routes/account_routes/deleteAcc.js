@@ -3,6 +3,9 @@ const authType = require("../../util/authType");
 const ImageModel = require("../../models/ImageModel");
 const {s3Details} = require("../../util/config");
 const s3 = require("../../util/awsS3");
+const {clearHash} = require("../../services/redisCache");
+const {promisify} = require("util");
+
 
 module.exports = function(app){
 
@@ -11,15 +14,15 @@ module.exports = function(app){
             
             const{userName, token} = req.body;
 
-            const{findSession} = req;
+            const{session} = req;
 
-            if(!userName || !token || !findSession){
+            if(!userName || !token || !session){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
-            const auth = authType.get(findSession.auth);
+            const auth = authType.get(session.auth);
 
-            const user = await auth.findById(findSession.userId);
+            const user = await auth.findById(session.userId);
 
             if(!user){
                 return res.json({"success": false,"message": "server error"});
@@ -30,17 +33,11 @@ module.exports = function(app){
 
                 const keys = images.map( obj =>{return {"Key": obj.location.replace(s3Details.bucketURL, "")}});                
                 
-                s3.deleteObjects({
+                await s3.deleteObjects({
                     Bucket: s3Details.bucketName,
                     Delete:{
                         Objects: keys
                     }
-                }, (err, res) => {
-                    if(err){
-                        console.log(err);
-                        return res.json({"success": false,"message": "server error"});
-                    }
-
                 });
                 
                 await ImageModel.deleteMany().where("_id").in(user.images).exec();
@@ -48,7 +45,11 @@ module.exports = function(app){
 
             await user.delete();
 
-            await findSession.delete();
+            await session.delete();
+
+            images.forEach(img => {
+                clearHash(`image/${img._id}`);
+            });
 
             return res.json({ "success": true, "message": "user deleted"});
            

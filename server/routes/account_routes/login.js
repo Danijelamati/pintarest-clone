@@ -10,7 +10,7 @@ module.exports = function(app){
         try{
             const {password} = req.body;            
             let {email} = req.body;  
-            console.log("here");
+            
             if(!email || !password){
                 return res.json({"success": false, "message": "Invalid input"});
             }

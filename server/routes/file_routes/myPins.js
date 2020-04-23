@@ -11,10 +11,10 @@ module.exports = function(app){
 
     app.get("/user/mypins",checkCredentials, async (req,res) => {
         try{
-            const {token,action} = req.query;
-            const {findSession} = req; 
+            const {action} = req.query;
+            const {session} = req; 
                
-            if(!token  || !findSession || !action){
+            if( !session || !action){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
@@ -24,9 +24,9 @@ module.exports = function(app){
                 return res.json({"success": false, "message": "invalid credentials"});
             }
 
-            const auth = authType.get(findSession.auth);
+            const auth = authType.get(session.auth);
 
-            const findUser = await auth.findById(findSession.userId);
+            const findUser = await auth.findById(session.userId);
        
             if(!findUser){
                 

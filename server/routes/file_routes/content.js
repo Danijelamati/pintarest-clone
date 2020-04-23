@@ -1,12 +1,11 @@
 const imageModel = require("../../models/ImageModel");
-const {s3Bucket} = require("../../util/config");
 
 module.exports = function(app){
 
     app.get("/content", async (req,res) => {
         try{
             console.log("content")
-            let images = await imageModel.find({});
+            let images = await imageModel.find({}).cache({key : "content"});
 
             if(!images){
                 return res.json({"success": false, "message": "server error"});

@@ -5,6 +5,7 @@ const cors = require("cors");
 const helmet = require("helmet");
 
 require('dotenv').config({ path: "./.env" });
+require("./server/services/redisCache");
 
 const apiRoutes = require("./server/routes/routes");
 
